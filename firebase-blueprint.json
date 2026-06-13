@@ -1,0 +1,32 @@
+{
+  "entities": {
+    "post": {
+      "title": "Post",
+      "description": "A lost or found item post",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "type": { "type": "string", "enum": ["lost", "found"] },
+        "category": { "type": "string", "enum": ["documents", "keys", "phones", "others"] },
+        "wilaya": { "type": "string" },
+        "commune": { "type": "string" },
+        "image": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string" },
+        "contactNumber": { "type": "string" },
+        "securityQuestion": { "type": "string" },
+        "securityAnswer": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "resolved"] }
+      },
+      "required": ["title", "type", "category", "wilaya", "commune", "status"]
+    }
+  },
+  "firestore": {
+    "posts/{postId}": {
+      "schema": "post",
+      "description": "Collection of lost & found posts"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "apiKey": "YOUR_API_KEY",
+  "authDomain": "",
+  "projectId": "",
+  "storageBucket": "",
+  "messagingSenderId": "",
+  "appId": "",
+  "firestoreDatabaseId": ""
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Algerian Lost & Found",
+  "description": "A progressive web app designed like a native Android APK for community lost & found across Algerian cities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
