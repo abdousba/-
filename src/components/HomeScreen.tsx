@@ -8,9 +8,12 @@ import { getFilteredPosts, getCurrentUser } from '../lib/firebase';
 import { WILAYAS, CATEGORIES } from '../data/wilayas';
 import PostCard from './PostCard';
 import AddPostModal from './AddPostModal';
+import AdminPanel from './AdminPanel';
 
 export default function HomeScreen() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [adminClickCount, setAdminClickCount] = useState(0);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'all' | 'lost' | 'found'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -64,6 +67,21 @@ export default function HomeScreen() {
     setShowAddModal(true);
   };
 
+  const handleFlagClick = () => {
+    const nextCount = adminClickCount + 1;
+    if (nextCount >= 5) {
+      setShowAdminPanel(true);
+      setAdminClickCount(0);
+    } else {
+      setAdminClickCount(nextCount);
+    }
+  };
+
+  const handleClearAllLocalData = () => {
+    localStorage.removeItem('dz_lost_found_posts');
+    window.location.reload();
+  };
+
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
       case 'FileText': return <FileText className="w-4 h-4" />;
@@ -99,8 +117,12 @@ export default function HomeScreen() {
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
-            <div className="bg-slate-50 border border-slate-100 text-slate-600 px-2.5 py-1 rounded-full text-[11px] font-bold font-mono">
-              🇩🇿
+            <div 
+              onClick={handleFlagClick}
+              className="bg-slate-50 border border-slate-100 text-slate-600 px-2.5 py-1 rounded-full text-[11px] font-bold font-mono cursor-pointer hover:bg-slate-100 select-none active:scale-95 transition-all"
+              title="انقر ٥ مرات لفتح لوحة التحكم السرية"
+            >
+              🇩🇿 {adminClickCount > 0 ? `(${adminClickCount})` : ''}
             </div>
           </div>
         </div>
@@ -265,6 +287,15 @@ export default function HomeScreen() {
           onPostAdded={fetchPosts}
           currentUserId={user?.uid || 'offline_user'}
           currentUserDisplayName={user?.displayName || 'مواطن جزائري'}
+        />
+      )}
+
+      {/* Admin Panel Gateway */}
+      {showAdminPanel && (
+        <AdminPanel 
+          posts={posts}
+          onClose={() => setShowAdminPanel(false)}
+          onClearAllLocalData={handleClearAllLocalData}
         />
       )}
     </div>
